@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lobby Privata - Football Knowledge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(#27ae60, #229954);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Press Start 2P', cursive;
+    }
+    button {
+      background-color: #2ecc71;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lobby Privata</h1>
+  <div class="container">
+    <h2>Crea una Lobby</h2>
+    <input type="text" id="createName" placeholder="Il tuo nome" />
+    <button onclick="createLobby()">Crea</button>
+
+    <h2>Oppure Entra</h2>
+    <input type="text" id="joinCode" placeholder="Codice Lobby" />
+    <input type="text" id="joinName" placeholder="Il tuo nome" />
+    <button onclick="joinLobby()">Entra</button>
+  </div>
+
+  <script>
+    function createLobby() {
+      const name = document.getElementById("createName").value.trim();
+      if (!name) return alert("Inserisci il tuo nome");
+      const code = Math.random().toString(36).substr(2, 5).toUpperCase();
+      alert(`Lobby creata con codice: ${code}`);
+      window.location.href = `game.html?code=${code}&name=${name}&host=true`;
+    }
+
+    function joinLobby() {
+      const code = document.getElementById("joinCode").value.trim().toUpperCase();
+      const name = document.getElementById("joinName").value.trim();
+      if (!code || !name) return alert("Inserisci codice e nome");
+      window.location.href = `game.html?code=${code}&name=${name}&host=false`;
+    }
+  </script>
+</body>
+</html>
