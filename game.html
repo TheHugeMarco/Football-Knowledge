@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partita 1v1 - Football Knowledge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(#27ae60, #2ecc71);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      height: 100vh;
+    }
+    h1 {
+      font-family: 'Press Start 2P', cursive;
+      margin-bottom: 10px;
+    }
+    .info, .log {
+      width: 100%;
+      max-width: 600px;
+      background: rgba(0,0,0,0.3);
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Football Knowledge - 1v1</h1>
+  <div class="info" id="matchInfo"></div>
+  <div class="log" id="log"></div>
+  <input type="text" id="answer" placeholder="Scrivi una squadra...">
+  <button onclick="submitAnswer()">Invia</button>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    const name = urlParams.get("name");
+    const host = urlParams.get("host") === "true";
+
+    document.getElementById("matchInfo").innerHTML = `Giocatore: <strong>${name}</strong><br>Lobby: <strong>${code}</strong>`;
+
+    let currentPlayer = "Seedorf";
+    const db = {
+      "Seedorf": ["Ajax", "Sampdoria", "Real Madrid", "Inter", "Milan"],
+      "Inzaghi": ["Piacenza", "Verona", "Parma", "Atalanta", "Juventus", "Milan"],
+      "Ibrahimovic": ["Malmo", "Ajax", "Juventus", "Inter", "Barcellona", "Milan", "PSG", "Manchester United"]
+    };
+
+    document.getElementById("log").innerHTML = `Inizia! Il primo giocatore è: <strong>${currentPlayer}</strong><br>`;
+
+    function submitAnswer() {
+      const val = document.getElementById("answer").value.trim();
+      document.getElementById("answer").value = "";
+      if (!val) return;
+      if (db[currentPlayer] && db[currentPlayer].includes(val)) {
+        document.getElementById("log").innerHTML += `✔️ ${currentPlayer} ha giocato in ${val}<br>`;
+        const next = Object.entries(db).find(([player, teams]) => teams.includes(val) && player !== currentPlayer);
+        currentPlayer = next ? next[0] : currentPlayer;
+        document.getElementById("log").innerHTML += `Prossimo giocatore: <strong>${currentPlayer}</strong><br>`;
+      } else {
+        document.getElementById("log").innerHTML += `❌ ${val} non valido per ${currentPlayer}<br>`;
+      }
+    }
+  </script>
+</body>
+</html>
